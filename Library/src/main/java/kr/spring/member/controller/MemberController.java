@@ -1,5 +1,7 @@
 package kr.spring.member.controller;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import kr.spring.member.service.MemberService;
 import kr.spring.member.vo.MemberVO;
@@ -27,7 +30,6 @@ public class MemberController {
 	}
 	
 	//회원가입
-	//회원가입 폼 호출
 	@GetMapping("/member/registerUser.do")
 	public String form() {
 		return "memberRegister";
@@ -47,5 +49,66 @@ public class MemberController {
 
 		return "common/notice";
 	}
+	
+	
+	
+	//로그인
+	@GetMapping("/member/login.do")
+	public String formLogin() {
+		return "memberLogin";
+	}
+	@PostMapping("/member/login.do")
+	public String submitLogin(@Valid MemberVO memberVO, BindingResult result,HttpSession session) {
+		
+		
+		//id와 passwd 필드만 유효성 체크 결과 오류가 있으면 폼 호출
+		if(result.hasFieldErrors("mem_id") || result.hasFieldErrors("mem_pw")) {
+			return formLogin();
+		}
+		//로그인 체크(id,비밀번호 일치 여부 체크)
+		MemberVO member = null;
+		try {
+			member = memberService.selectCheckMember(memberVO.getMem_id());
+			boolean check = false;
+			
+			if(member!=null) {
+				//비밀번호 일치 여부 체크
+				check = member.isCheckedPassword(memberVO.getMem_pw());
+			}
+			if(check) {
+				//check가 true일시 인증성공
+				
+				//인증성공, 로그인 처리
+				session.setAttribute("user", member);
+
+				return "redirect:/main/main.do";
+			}
+			//인증실패시
+			throw new AuthCheckException();
+			
+		}catch(AuthCheckException e) {
+			//인증 실패로 로그인폼 호출
+			if(member!=null && member.getMem_auth()==1) {
+				//정지회원 메시지 표시
+				result.reject("noAuthority");
+			}else {
+				result.reject("invalidIdOrPassword");
+			}
+			
+			
+			return formLogin();
+		}
+	}
+
+	//========로그아웃==========
+	@RequestMapping("/member/logout.do")
+	public String logout(HttpSession session) {
+				
+			//로그아웃
+			session.invalidate();
+				
+			return "redirect:/main/main.do";
+		}
+	
 
 }
