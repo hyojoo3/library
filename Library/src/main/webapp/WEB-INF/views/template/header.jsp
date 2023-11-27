@@ -29,6 +29,7 @@
 	</c:if>
 	<c:if test="${!empty user && user.mem_auth == 9}">
 		<a href="${pageContext.request.contextPath}/book/bookInsert.do">도서등록</a>
+		<a href="${pageContext.request.contextPath}/book/adminBook.do">도서관리</a>
 	</c:if>
 	<c:if test="${!empty user && user.mem_auth == 9}">
 		<a href="${pageContext.request.contextPath}/main/admin.do">관리자메인</a>

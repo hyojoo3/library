@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!-- 게시판 목록 시작 -->
+<!-- 관리자 도서 관리 시작 -->
 <script type="text/javascript">
 	$(function(){
 		//검색 유효성 체크
@@ -15,7 +15,7 @@
 	});
 </script>
 <div class="page-main">
-	<h2>도서 목록</h2>
+	<h2>관리자 도서 관리</h2>
 	<%-- <form action="bookList.do" id="search_form" method="get">
 		<ul class="search">
 			<li>
@@ -69,6 +69,8 @@
 			<th>작가명</th>
 			<th>출판사</th>
 			<th>대출</th> <!-- 대출가능 여부 버튼 -->
+			<th>수정</th>
+			<th>삭제</th>
 		</tr>
 		<c:forEach var="book" items="${list}">
 		<tr>
@@ -79,25 +81,33 @@
 			<td class="align-center">${book.book_writer}</td>
 			<td class="align-center">${book.book_publisher}</td>
 			<c:if test="${book.book_state==0}">
-				<td class="align-center">
-					<button onclick="location.href='#'">대출하기</button>
-				</td>
+				<td class="align-center">대출가능</td>	
 			</c:if>
 			<c:if test="${book.book_state==1}">
-				<td class="align-center"><button disabled>대출중</button></td>
+				<td class="align-center">대출중</td>	
 			</c:if>
 			<c:if test="${book.book_state==2}">
-				<td class="align-center">대출 불가</td>
+				<td class="align-center">대출불가</td>	
 			</c:if>
+			<td class="align-center">
+				<button onclick="location.href='/book/modifyBook.do?book_num=${book.book_num}'">수정</button>
+			</td>
+			<td class="align-center">
+				<button id="delete_btn">삭제</button>
+				<script type="text/javascript">
+				let delete_btn = document.getElementById('delete_btn');
+				delete_btn.onclick=function(){
+					let choice = confirm('삭제하시겠습니까?');
+					if(choice){
+						location.replace('deleteBook.do?book_num=${book.book_num}');
+					}
+				}
+			</script>
+			</td>
 		</tr>
 		</c:forEach>
 	</table>
 	<div class="align-center">${page}</div>
 	</c:if>
 </div>
-<!-- 게시판 목록 끝 -->
-
-
-
-
-
+<!-- 관리자 도서 관리 끝 -->

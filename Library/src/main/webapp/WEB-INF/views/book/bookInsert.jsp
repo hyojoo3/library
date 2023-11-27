@@ -49,7 +49,7 @@
 		
         <div class="align-center">
             <input type="submit" value="전송" class="default-btn">
-            <input type="button" value="홈으로" class="default-btn" onclick="location.href='${pageContext.request.contextPath}/item/itemAdminList.do'">
+            <input type="button" value="홈으로" class="default-btn" onclick="location.href='${pageContext.request.contextPath}/main/main.do'">
         </div>
     </form:form>
 </div>

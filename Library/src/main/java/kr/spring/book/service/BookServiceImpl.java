@@ -33,8 +33,18 @@ public class BookServiceImpl implements BookService {
 	}
 
 	@Override
-	public BookVO bookSelect(Integer book_num) {
-		return bookMapper.bookSelect(book_num);
+	public BookVO selectBook(Integer book_num) {
+		return bookMapper.selectBook(book_num);
+	}
+
+	@Override
+	public void modifyBook(BookVO book) {
+		bookMapper.modifyBook(book);
+	}
+
+	@Override
+	public void deleteBook(Integer book_num) {
+		bookMapper.deleteBook(book_num);
 	}
 
 }

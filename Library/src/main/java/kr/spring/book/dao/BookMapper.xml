@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.spring.book.dao.BookMapper">
 
-	<insert id="insertBook" parameterType="BookVO">
+	<insert id="insertBook" parameterType="bookVO">
 		INSERT INTO book(
 			book_num,
 			book_name,
@@ -19,5 +19,21 @@
 			#{book_publisher}
 		)
 	</insert>
+
+	<update id="modifyBook" parameterType="bookVO">
+		UPDATE book SET
+			book_name=#{book_name},
+			book_writer=#{book_writer},
+			book_publisher=#{book_publisher}
+			<if test="book_photo.length>0">
+			,book_photo=#{book_photo}
+			,book_photoName=#{book_photoName}
+			</if>
+			<if test="book_state==0">
+			, book_state=#{book_state}
+			</if>
+		WHERE
+			book_num=#{book_num}
+	</update>
 
 </mapper>
