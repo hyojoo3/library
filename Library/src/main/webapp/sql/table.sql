@@ -21,6 +21,8 @@ CREATE TABLE member_detail(
 CREATE TABLE book(
 	book_num number,
 	book_name varchar2(100) not null,
+	book_photo blob not null,
+ 	book_photoName varchar2(100) not null,
 	book_writer varchar2(30) not null,
 	book_publisher varchar2(30) not null,
 	book_state number(1) default 0 not null,
