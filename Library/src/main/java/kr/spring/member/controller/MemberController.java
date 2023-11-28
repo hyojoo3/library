@@ -1,5 +1,9 @@
 package kr.spring.member.controller;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -12,9 +16,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import kr.spring.member.service.MemberService;
 import kr.spring.member.vo.MemberVO;
+import kr.spring.util.PagingUtil;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -100,7 +107,7 @@ public class MemberController {
 		}
 	}
 
-	//========로그아웃==========
+	//로그아웃
 	@RequestMapping("/member/logout.do")
 	public String logout(HttpSession session) {
 				
@@ -110,5 +117,38 @@ public class MemberController {
 			return "redirect:/main/main.do";
 		}
 	
-
+	
+	//관리자 회원 목록
+	@RequestMapping("/member/adminMemberList.do")
+	public ModelAndView getList(@RequestParam(value="pageNum", defaultValue="1") int currentPage, String keyfield,String keyword) {
+		
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("keyfield", keyfield);
+		map.put("keyword", keyword);
+		
+		//전체/검색 레코드수
+		int count = memberService.adminMemberCount(map);
+		
+		log.debug("<<count>> : " + count);
+		
+		//페이지 처리
+		PagingUtil page = new PagingUtil(keyfield,keyword,currentPage, count,12,5,"adminMemberList.do");
+		
+		List<MemberVO> list = null;
+		if(count > 0) {
+			map.put("start", page.getStartRow());
+			map.put("end", page.getEndRow());
+			
+			list = memberService.adminMemberList(map);
+		}
+		System.out.println("+++" + list);
+		
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("adminMemberList");
+		mav.addObject("count", count);
+		mav.addObject("list", list);
+		mav.addObject("page", page.getPage());
+		
+		return mav;
+	}
 }

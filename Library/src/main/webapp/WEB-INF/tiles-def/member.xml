@@ -21,4 +21,22 @@
    		<put-attribute name="footer" value="/WEB-INF/views/template/footer.jsp"/>
     </definition>
 
+	<!-- 마이페이지 -->
+    <definition name="myPage" template="/WEB-INF/views/template/layout_basic.jsp">
+   		<put-attribute name="title" value="로그인"/>
+   		<put-attribute name="header" value="/WEB-INF/views/template/header.jsp"/>
+   		<put-attribute name="body" value="/WEB-INF/views/member/myPage.jsp"/>
+   		<put-attribute name="footer" value="/WEB-INF/views/template/footer.jsp"/>
+    </definition>
+
+
+	<!--관리자 회원목록-->
+	<definition name="adminMemberList" template="/WEB-INF/views/template/layout_admin.jsp">
+   		<put-attribute name="title" value="관리자 도서삭제"/>
+   		<put-attribute name="header" value="/WEB-INF/views/template/header.jsp"/>
+		<put-attribute name="nav" value="/WEB-INF/views/template/admin_nav.jsp"/>
+   		<put-attribute name="body" value="/WEB-INF/views/member/adminMemberList.jsp"/>
+   		<put-attribute name="footer" value="/WEB-INF/views/template/footer.jsp"/>
+    </definition>
+
 </tiles-definitions>

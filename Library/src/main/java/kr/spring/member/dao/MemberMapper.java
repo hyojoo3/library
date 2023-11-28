@@ -1,9 +1,13 @@
 package kr.spring.member.dao;
 
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+import kr.spring.book.vo.BorrowVO;
 import kr.spring.member.vo.MemberVO;
 
 @Mapper
@@ -22,4 +26,9 @@ public interface MemberMapper {
 	//회원정보 구하기
 	@Select("SELECT * FROM member m JOIN member_detail d ON m.mem_num=d.mem_num WHERE m.mem_num=#{mem_num}")
 	public MemberVO selectMember(Integer mem_num);
+	
+	//관리자 회원 목록
+	//나의 도서 대출 목록
+	public List<MemberVO> adminMemberList(Map<String, Object> map);
+	public int adminMemberCount(Map<String,Object> map);
 }

@@ -21,10 +21,12 @@
    		<put-attribute name="footer" value="/WEB-INF/views/template/footer.jsp"/>
     </definition>
 
+
 	<!--관리자 도서관리-->
-	<definition name="adminBook" template="/WEB-INF/views/template/layout_basic.jsp">
+	<definition name="adminBook" template="/WEB-INF/views/template/layout_admin.jsp">
    		<put-attribute name="title" value="관리자 도서관리"/>
    		<put-attribute name="header" value="/WEB-INF/views/template/header.jsp"/>
+		<put-attribute name="nav" value="/WEB-INF/views/template/admin_nav.jsp"/>
    		<put-attribute name="body" value="/WEB-INF/views/book/adminBook.jsp"/>
    		<put-attribute name="footer" value="/WEB-INF/views/template/footer.jsp"/>
     </definition>
@@ -37,11 +39,20 @@
    		<put-attribute name="footer" value="/WEB-INF/views/template/footer.jsp"/>
     </definition>
 
-	<!--관리자 도서수정-->
+	<!--관리자 도서삭제-->
 	<definition name="deleteBook" template="/WEB-INF/views/template/layout_basic.jsp">
    		<put-attribute name="title" value="관리자 도서삭제"/>
    		<put-attribute name="header" value="/WEB-INF/views/template/header.jsp"/>
    		<put-attribute name="body" value="/WEB-INF/views/book/deleteBook.jsp"/>
+   		<put-attribute name="footer" value="/WEB-INF/views/template/footer.jsp"/>
+    </definition>
+
+	<!--관리자 대출목록-->
+	<definition name="adminBorrowList" template="/WEB-INF/views/template/layout_admin.jsp">
+   		<put-attribute name="title" value="관리자 도서삭제"/>
+   		<put-attribute name="header" value="/WEB-INF/views/template/header.jsp"/>
+		<put-attribute name="nav" value="/WEB-INF/views/template/admin_nav.jsp"/>
+   		<put-attribute name="body" value="/WEB-INF/views/book/adminBorrowList.jsp"/>
    		<put-attribute name="footer" value="/WEB-INF/views/template/footer.jsp"/>
     </definition>
 

@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.spring.book.dao.BookMapper;
 import kr.spring.book.vo.BookVO;
+import kr.spring.book.vo.BorrowVO;
 
 @Service
 @Transactional
@@ -45,6 +46,46 @@ public class BookServiceImpl implements BookService {
 	@Override
 	public void deleteBook(Integer book_num) {
 		bookMapper.deleteBook(book_num);
+	}
+
+	@Override
+	public void checkIn(BorrowVO borrow) {
+		bookMapper.checkIn(borrow);
+	}
+
+	@Override
+	public void borrow(Integer book_num) {
+		bookMapper.borrow(book_num);
+	}
+
+	@Override
+	public void returnBook(Integer book_num) {
+		bookMapper.returnBook(book_num);
+	}
+
+	@Override
+	public void checkOut(Integer borrow_num) {
+		bookMapper.checkOut(borrow_num);
+	}
+
+	@Override
+	public List<BorrowVO> borrowList(Map<String, Object> map) {
+		return bookMapper.borrowList(map);
+	}
+
+	@Override
+    public int borrowRowCount(Map<String, Object> map) {
+        return bookMapper.borrowRowCount(map);
+    }
+
+	@Override
+	public List<BorrowVO> adminBorrowList(Map<String, Object> map) {
+		return bookMapper.adminBorrowList(map);
+	}
+
+	@Override
+	public int adminBorrowRowCount(Map<String, Object> map) {
+		return bookMapper.adminBorrowRowCount(map);
 	}
 
 }

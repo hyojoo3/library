@@ -1,5 +1,8 @@
 package kr.spring.member.service;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +36,18 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public MemberVO selectCheckMember(String mem_id) {
 		return memberMapper.selectCheckMember(mem_id);
+	}
+
+
+	@Override
+	public List<MemberVO> adminMemberList(Map<String, Object> map) {
+		return memberMapper.adminMemberList(map);
+	}
+
+
+	@Override
+	public int adminMemberCount(Map<String, Object> map) {
+		return memberMapper.adminMemberCount(map);
 	}
 
 

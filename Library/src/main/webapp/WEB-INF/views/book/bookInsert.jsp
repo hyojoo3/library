@@ -8,20 +8,6 @@
 <div class="page-main">
     <h2>상품등록</h2>
     <form:form modelAttribute="bookVO" action="bookInsert.do" id="bookInsert" method="post" enctype="multipart/form-data">
-        <!-- 사진 등록 시작 -->
-        <div>
-            <ul>
-                <li>
-                    <!-- 이미지를 나타낼 <img> 요소 -->
-                    <img src="${pageContext.request.contextPath}/images/book_add.png" width="200" height="200" class="book-photo">
-                    <div class="camera" id="photo_btn">
-                        <img src="${pageContext.request.contextPath}/images/camera.png" width="35">
-                    </div>
-                </li>
-                
-            </ul>
-        </div>
-        <!-- 사진 등록 끝 -->
 		<ul>
 			<li>
 				<form:label path="book_name">도서명</form:label>

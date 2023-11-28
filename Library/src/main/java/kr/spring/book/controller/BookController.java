@@ -22,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import kr.spring.book.service.BookService;
 import kr.spring.book.vo.BookVO;
+import kr.spring.book.vo.BorrowVO;
 import kr.spring.member.service.MemberService;
 import kr.spring.member.vo.MemberVO;
 import kr.spring.util.PagingUtil;
@@ -34,6 +35,7 @@ public class BookController {
 	
 	@Autowired
 	private MemberService memberService;
+	
 	
 	@ModelAttribute
 	public BookVO initCommand() {
@@ -64,7 +66,7 @@ public class BookController {
 		bookService.insertBook(bookVO);
 
 		model.addAttribute("message", "도서를 등록했습니다");
-		model.addAttribute("url", request.getContextPath()+"/main/main.do");
+		model.addAttribute("url", request.getContextPath()+"/book/adminBook.do");
 		
 		return "common/resultView";
 	}
@@ -167,7 +169,7 @@ public class BookController {
 		//글수정
 		bookService.modifyBook(bookVO);
 		
-		model.addAttribute("message", "도서 수정 완료!");
+		model.addAttribute("message", "도서 수정을 완료했습니다.");
 		model.addAttribute("url", request.getContextPath()+"/book/adminBook.do");
 		
 		return "common/resultView";
@@ -176,10 +178,123 @@ public class BookController {
 	
 	//도서 삭제
 	@RequestMapping("/book/deleteBook.do")
-	public String deleteBook(@RequestParam int book_num) {
+	public String deleteBook(@RequestParam int book_num,Model model,HttpServletRequest request) {
 		
 		bookService.deleteBook(book_num);
 		
-		return "redirect:/book/adminBook.do";
+		model.addAttribute("message", "도서를 삭제했습니다.");
+		model.addAttribute("url", request.getContextPath()+"/book/adminBook.do");
+		
+		return "common/resultView";
+	}
+	
+	//도서 대출
+	@RequestMapping("/book/borrowBook.do")
+	public String borrowBook(@RequestParam int book_num,BorrowVO borrow,HttpSession session,Model model,HttpServletRequest request) {
+		
+		MemberVO user = (MemberVO)session.getAttribute("user");
+		
+		if(user==null) {
+			model.addAttribute("message", "로그인 후 이용해주세요");
+			model.addAttribute("url", request.getContextPath()+"/book/bookList.do");
+		}else {
+			borrow.setMem_num(user.getMem_num());
+			
+			bookService.checkIn(borrow);
+			bookService.borrow(book_num);
+			
+			model.addAttribute("message", "도서 대출 완료");
+			model.addAttribute("url", request.getContextPath()+"/book/bookList.do");
+		}
+		return "common/resultView";
+	}
+	
+	//도서 반납
+	@RequestMapping("/book/returnBook.do")
+	public String returnBook(@RequestParam int book_num,@RequestParam int borrow_num,BorrowVO borrow,HttpSession session,Model model,HttpServletRequest request) {
+		
+		MemberVO user = (MemberVO)session.getAttribute("user");
+		
+		if(user==null) {
+			model.addAttribute("message", "로그인 후 이용해주세요");
+			model.addAttribute("url", request.getContextPath()+"/book/bookList.do");
+		}else {
+			borrow.setBorrow_num(user.getMem_num());
+			//System.out.print("!!!!!!!"+borrow);
+			bookService.returnBook(book_num);
+			bookService.checkOut(borrow_num);
+			
+			model.addAttribute("message", "도서 반납 완료");
+			model.addAttribute("url", request.getContextPath()+"/book/bookList.do");
+		}
+		return "common/resultView";
+	}
+	
+	//회원 도서 대출 목록
+	@RequestMapping("/member/myPage.do")
+	public ModelAndView myPage(@RequestParam(value="pageNum",defaultValue="1") int currentPage,
+							String keyfield, String keyword, HttpSession session) {
+		MemberVO user = (MemberVO)session.getAttribute("user");
+		
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("keyfield", keyfield);
+		map.put("keyword", keyword);
+		map.put("mem_num", user.getMem_num());
+		
+		//전체/검색 레코드수
+		int count = bookService.borrowRowCount(map);
+		
+		//페이지 처리
+		PagingUtil page = new PagingUtil(keyfield,keyword,currentPage,
+		          count,12,5,"myPage.do");
+		
+		List<BorrowVO> list = null;
+		if(count > 0) {
+		    map.put("start", page.getStartRow());
+		    map.put("end", page.getEndRow());
+		    
+		    list = bookService.borrowList(map);
+		}
+		
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("myPage");
+		mav.addObject("count", count);
+		mav.addObject("list", list);
+		mav.addObject("page", page.getPage());
+		
+		return mav;
+	}
+	
+	// 관리자 도서 대출 목록
+	@RequestMapping("/book/adminBorrowList.do")
+	public ModelAndView adminBorrowList(@RequestParam(value = "pageNum", defaultValue = "1") int currentPage,
+			  						@RequestParam(value = "order", defaultValue = "1") int order, String keyfield, String keyword) {
+		
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("keyfield", keyfield);
+		map.put("keyword", keyword);
+
+		// 전체/검색 레코드수
+		int count = bookService.adminBorrowRowCount(map);
+
+		// 페이지 처리
+		PagingUtil page = new PagingUtil(keyfield, keyword, currentPage, count, 12, 5, "adminBorrowList.do");
+
+		List<BorrowVO> list = null;
+		if (count > 0) {
+			map.put("start", page.getStartRow());
+			map.put("end", page.getEndRow());
+
+			list = bookService.adminBorrowList(map);
+		}
+
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("adminBorrowList");
+		mav.addObject("count", count);
+		mav.addObject("list", list);
+		mav.addObject("page", page.getPage());
+
+		return mav;
 	}
 }

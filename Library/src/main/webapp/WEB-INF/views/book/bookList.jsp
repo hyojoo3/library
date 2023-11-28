@@ -16,14 +16,13 @@
 </script>
 <div class="page-main">
 	<h2>도서 목록</h2>
-	<%-- <form action="bookList.do" id="search_form" method="get">
+	<form action="bookList.do" id="search_form" method="get">
 		<ul class="search">
 			<li>
 				<select name="keyfield" id="keyfield">
-					<option value="1" <c:if test="${param.keyfield == 1}">selected</c:if>>제목</option>
-					<option value="2" <c:if test="${param.keyfield == 2}">selected</c:if>>ID+별명</option>
-					<option value="3" <c:if test="${param.keyfield == 3}">selected</c:if>>내용</option>
-					<option value="4" <c:if test="${param.keyfield == 4}">selected</c:if>>제목+내용</option>
+					<option value="1" <c:if test="${param.keyfield == 1}">selected</c:if>>도서명</option>
+					<option value="2" <c:if test="${param.keyfield == 2}">selected</c:if>>작가명</option>
+					<option value="3" <c:if test="${param.keyfield == 3}">selected</c:if>>출판사명</option>
 				</select>
 			</li>
 			<li>
@@ -33,29 +32,23 @@
 			<li>
 				<input type="submit" value="찾기">
 				<input type="button" value="목록" 
-				    onclick="location.href='list.do'">
+				    onclick="location.href='bookList.do'">
 			</li>
 		</ul>
 		<div class="align-right">
 			<select id="order" name="order">
-				<option value="1" <c:if test="${param.order == 1}">selected</c:if>>최신</option>
-				<option value="2" <c:if test="${param.order == 2}">selected</c:if>>조회수</option>
-				<option value="3" <c:if test="${param.order == 3}">selected</c:if>>좋아요</option>
-				<option value="4" <c:if test="${param.order == 4}">selected</c:if>>댓글수</option>
+				<option value="1" <c:if test="${param.order == 1}">selected</c:if>>가나다순</option>
+				<option value="2" <c:if test="${param.order == 2}">selected</c:if>>대출 가능 도서 순</option>
 			</select>
 			<script type="text/javascript">
 				$(function(){
 					$('#order').change(function(){
-						location.href='list.do?keyfield='+$('#keyfield').val()+'&keyword='+$('#keyword').val()+'&order='+$('#order').val();
+						location.href='bookList.do?keyfield='+$('#keyfield').val()+'&keyword='+$('#keyword').val()+'&order='+$('#order').val();
 					});
 				});
 			</script>
-			<c:if test="${!empty user}">
-				<input type="button" value="글쓰기" 
-			                     onclick="location.href='write.do'">
-			</c:if>
 		</div>
-	</form> --%>
+	</form>
 	
 	<c:if test="${count == 0}">
 	<div class="result-display">표시할 게시물이 없습니다.</div>
@@ -63,7 +56,6 @@
 	<c:if test="${count > 0}">
 	<table class="striped-table">
 		<tr>
-			<th>도서번호</th>
 			<th>사진</th>
 			<th>도서명</th>
 			<th>작가명</th>
@@ -72,7 +64,6 @@
 		</tr>
 		<c:forEach var="book" items="${list}">
 		<tr>
-			<td class="align-center">${book.book_num}</td>
 			<td class="align-center">
 			<img src="${pageContext.request.contextPath}/book/photoView.do?book_num=${book.book_num}" width="50" height="50"></td>
 			<td class="align-center">${book.book_name}</td>
@@ -80,7 +71,7 @@
 			<td class="align-center">${book.book_publisher}</td>
 			<c:if test="${book.book_state==0}">
 				<td class="align-center">
-					<button onclick="location.href='#'">대출하기</button>
+					<button onclick="location.href='${pageContext.request.contextPath}/book/borrowBook.do?book_num=${book.book_num}'">대출하기</button>
 				</td>
 			</c:if>
 			<c:if test="${book.book_state==1}">

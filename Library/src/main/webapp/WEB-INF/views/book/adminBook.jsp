@@ -16,14 +16,13 @@
 </script>
 <div class="page-main">
 	<h2>관리자 도서 관리</h2>
-	<%-- <form action="bookList.do" id="search_form" method="get">
+	<form action="adminBook.do" id="search_form" method="get">
 		<ul class="search">
 			<li>
 				<select name="keyfield" id="keyfield">
-					<option value="1" <c:if test="${param.keyfield == 1}">selected</c:if>>제목</option>
-					<option value="2" <c:if test="${param.keyfield == 2}">selected</c:if>>ID+별명</option>
-					<option value="3" <c:if test="${param.keyfield == 3}">selected</c:if>>내용</option>
-					<option value="4" <c:if test="${param.keyfield == 4}">selected</c:if>>제목+내용</option>
+					<option value="1" <c:if test="${param.keyfield == 1}">selected</c:if>>도서명</option>
+					<option value="2" <c:if test="${param.keyfield == 2}">selected</c:if>>작가명</option>
+					<option value="3" <c:if test="${param.keyfield == 3}">selected</c:if>>출판사명</option>
 				</select>
 			</li>
 			<li>
@@ -33,29 +32,24 @@
 			<li>
 				<input type="submit" value="찾기">
 				<input type="button" value="목록" 
-				    onclick="location.href='list.do'">
+				    onclick="location.href='adminBook.do'">
 			</li>
 		</ul>
 		<div class="align-right">
 			<select id="order" name="order">
-				<option value="1" <c:if test="${param.order == 1}">selected</c:if>>최신</option>
-				<option value="2" <c:if test="${param.order == 2}">selected</c:if>>조회수</option>
-				<option value="3" <c:if test="${param.order == 3}">selected</c:if>>좋아요</option>
-				<option value="4" <c:if test="${param.order == 4}">selected</c:if>>댓글수</option>
+				<option value="1" <c:if test="${param.order == 1}">selected</c:if>>가나다순</option>
+				<option value="2" <c:if test="${param.order == 2}">selected</c:if>>대출 가능 도서 순</option>
 			</select>
 			<script type="text/javascript">
 				$(function(){
 					$('#order').change(function(){
-						location.href='list.do?keyfield='+$('#keyfield').val()+'&keyword='+$('#keyword').val()+'&order='+$('#order').val();
+						location.href='adminBook.do?keyfield='+$('#keyfield').val()+'&keyword='+$('#keyword').val()+'&order='+$('#order').val();
 					});
 				});
 			</script>
-			<c:if test="${!empty user}">
-				<input type="button" value="글쓰기" 
-			                     onclick="location.href='write.do'">
-			</c:if>
 		</div>
-	</form> --%>
+	</form>
+	<button onclick="location.href='${pageContext.request.contextPath}/book/bookInsert.do'">도서등록</button>
 	
 	<c:if test="${count == 0}">
 	<div class="result-display">표시할 게시물이 없습니다.</div>

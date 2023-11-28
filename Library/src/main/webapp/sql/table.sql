@@ -33,8 +33,11 @@ CREATE SEQUENCE book_seq;
 --대출정보
 CREATE TABLE book_borrow(
 	borrow_num number,
+    borrow_date date default SYSDATE not null,
+    return_date date default (SYSDATE+14) not null,
 	book_num number not null,
 	mem_num number not null,
+	borrow_state number(1) default 1 not null,
 	constraint book_borrow_pk primary key (borrow_num),
 	constraint book_borrow_fk1 foreign key (book_num) references book (book_num),
 	constraint book_borrow_fk2 foreign key (mem_num) references member (mem_num)

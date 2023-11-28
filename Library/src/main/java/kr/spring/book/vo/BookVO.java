@@ -20,6 +20,8 @@ public class BookVO {
 	private String book_publisher;
 	private int book_state;
 	
+	
+	
 	public void setUpload(MultipartFile upload)throws IOException{
 		//MultipartFile -> byte[]
 		setBook_photo(upload.getBytes());
