@@ -40,6 +40,8 @@ public interface BookMapper {
 	public void checkIn(BorrowVO borrow);
 	@Update("UPDATE book SET book_state=1 WHERE book_num=#{book_num}")
 	public void borrow(Integer book_num);
+	@Select("SELECT COUNT(*) FROM book_borrow WHERE mem_num=#{mem_num} AND borrow_state=1")
+	public int borrowCheck(Integer mem_num);
 	
 	//반납
 	@Update("UPDATE book_borrow SET borrow_state=0 WHERE borrow_num=#{borrow_num}")

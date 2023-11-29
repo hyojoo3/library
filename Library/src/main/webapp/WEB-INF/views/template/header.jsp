@@ -28,10 +28,7 @@
 		<a href="${pageContext.request.contextPath}/main/main.do">홈으로</a>
 	</c:if>
 	<c:if test="${!empty user && user.mem_auth == 9}">
-		<a href="${pageContext.request.contextPath}/book/adminBook.do">도서관리</a>
-	</c:if>
-	<c:if test="${!empty user && user.mem_auth == 9}">
-		<a href="${pageContext.request.contextPath}/book/adminBorrowList.do">관리자메인</a>
+		<a href="${pageContext.request.contextPath}/book/adminBorrowList.do">관리자페이지</a>
 	</c:if>
 </div>
 <!-- 상단 끝 -->

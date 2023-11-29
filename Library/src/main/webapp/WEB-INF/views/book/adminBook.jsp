@@ -35,21 +35,8 @@
 				    onclick="location.href='adminBook.do'">
 			</li>
 		</ul>
-		<div class="align-right">
-			<select id="order" name="order">
-				<option value="1" <c:if test="${param.order == 1}">selected</c:if>>가나다순</option>
-				<option value="2" <c:if test="${param.order == 2}">selected</c:if>>대출 가능 도서 순</option>
-			</select>
-			<script type="text/javascript">
-				$(function(){
-					$('#order').change(function(){
-						location.href='adminBook.do?keyfield='+$('#keyfield').val()+'&keyword='+$('#keyword').val()+'&order='+$('#order').val();
-					});
-				});
-			</script>
-		</div>
 	</form>
-	<button onclick="location.href='${pageContext.request.contextPath}/book/bookInsert.do'">도서등록</button>
+	<button onclick="location.href='${pageContext.request.contextPath}/book/bookInsert.do'" class="insertBook">도서등록</button>
 	
 	<c:if test="${count == 0}">
 	<div class="result-display">표시할 게시물이 없습니다.</div>
@@ -78,7 +65,7 @@
 				<td class="align-center">대출가능</td>	
 			</c:if>
 			<c:if test="${book.book_state==1}">
-				<td class="align-center">대출중</td>	
+				<td class="align-center" id="red">대출중</td>	
 			</c:if>
 			<c:if test="${book.book_state==2}">
 				<td class="align-center">대출불가</td>	

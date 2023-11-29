@@ -36,6 +36,20 @@
 			</if>
 		</where>
 	</sql>
+	
+	<sql id="bookSearch2">
+		<if test="keyword != null and keyword != ''">
+			<if test="keyfield == 1">
+				AND book_name LIKE '%' || #{keyword} || '%'
+			</if>
+			<if test="keyfield == 2">
+				AND book_writer LIKE '%' || #{keyword} || '%'
+			</if>
+			<if test="keyfield == 3">
+				AND book_publisher LIKE '%' || #{keyword} || '%'
+			</if>
+		</if>
+	</sql>
 
 	<sql id="bookOrder">
 		<if test="order == 1">
@@ -45,6 +59,7 @@
 			ORDER BY book_state, book_name
 		</if>
 	</sql>
+	
 
 	<!-- 전체/검색 레코드수 -->
 	<select id="selectRowCount" parameterType="map" resultType="integer">
@@ -90,7 +105,8 @@
 	<!--마이페이지 대출 목록-->
 	<!-- 전체/검색 레코드수 -->
 	<select id="borrowRowCount" parameterType="map" resultType="integer">
-		SELECT COUNT(*) FROM book a LEFT OUTER JOIN book_borrow b ON a.book_num=b.book_num WHERE b.mem_num=#{mem_num}
+		SELECT COUNT(*) FROM book m LEFT OUTER JOIN book_borrow n ON m.book_num=n.book_num WHERE n.mem_num=#{mem_num}
+		<include refid="bookSearch2"></include>
 	</select>
 	
 	<!-- 전체/검색 목록 -->
@@ -100,19 +116,21 @@
 	    FROM (SELECT a.*, rownum rnum
 	        FROM (SELECT
 	             m.book_name, m.book_photo, m.book_photoname, n.* FROM book m 
-	                LEFT OUTER JOIN book_borrow n ON m.book_num=n.book_num WHERE n.mem_num=#{mem_num}
+	                LEFT OUTER JOIN book_borrow n ON m.book_num=n.book_num WHERE n.mem_num=#{mem_num} 
+					<include refid="bookSearch2"></include>
+					ORDER BY n.borrow_date DESC
 	                )a)   
 	    <![CDATA[
 	    WHERE rnum >= #{start} AND rnum <= #{end}
-	    ]]>
-		ORDER BY borrow_date DESC                                     
+	    ]]>                                    
 	</select>
 	
 	
 	<!--관리자페이지 대출 목록-->
 	<!-- 전체/검색 레코드수 -->
 	<select id="adminBorrowRowCount" parameterType="map" resultType="integer">
-		SELECT COUNT(*) FROM book a LEFT OUTER JOIN book_borrow b ON a.book_num=b.book_num
+		SELECT COUNT(*) FROM book m LEFT OUTER JOIN book_borrow n ON m.book_num=n.book_num
+		<include refid="bookSearch"></include>
 	</select>
 	
 	<!-- 전체/검색 목록 -->
@@ -121,13 +139,16 @@
 	      *
 	    FROM (SELECT a.*, rownum rnum
 	        FROM (SELECT
-	             m.book_name, m.book_photo, m.book_photoname, n.* FROM book m 
-	                LEFT OUTER JOIN book_borrow n ON m.book_num=n.book_num
+	             m.book_name, m.book_photo, m.book_photoname, r.mem_name, n.* FROM book_borrow n 
+	                LEFT OUTER JOIN book m ON m.book_num=n.book_num
+					LEFT OUTER JOIN member r ON n.mem_num=r.mem_num 
+					<include refid="bookSearch"></include>
+					ORDER BY borrow_date DESC
 	                )a)   
 	    <![CDATA[
 	    WHERE rnum >= #{start} AND rnum <= #{end}
 	    ]]>
-		ORDER BY borrow_date DESC                                     
+		                                     
 	</select>
 
 </mapper>

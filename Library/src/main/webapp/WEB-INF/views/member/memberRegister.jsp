@@ -10,11 +10,6 @@
 			<li>
 				<form:label path="mem_id">아이디</form:label>
 				<form:input path="mem_id" placeholder="영문, 숫자 4~12자" autocomplete="off"/>
-				
-				<%-- <input type="button" id="confirmId" value="ID중복체크" class="default-btn">
-				<span id="message_id"></span>
-				<form:errors path="id" cssClass="error-color"/> --%>
-				
 			</li>
 			<li>
 				<form:label path="mem_pw">비밀번호</form:label>
@@ -39,7 +34,7 @@
 			</li>
 		</ul>
 		<div class="align-center">
-			<form:button class="default-btn">전송</form:button>
+			<form:button class="default-btn">가입하기</form:button>
 			<input type="button" value="홈으로" class="default-btn" onclick="location.href='${pageContext.request.contextPath}/main/main.do'">
 		</div>
 	</form:form>

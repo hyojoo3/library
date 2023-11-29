@@ -82,6 +82,9 @@ a:hover{
 	color:#09aa5c;
 	transition:0.2s ease-out;
 }
+#red{
+	color: red;
+}
 /* 공통 정렬
 ------------------------*/
 .align-center{
@@ -401,4 +404,7 @@ div#output{
 form#mre_form, .page-main form#tre_form, .page-main form#wre_form{
 	border: none;
 	margin: 5px;
+}
+.insertBook{
+	margin-left: 670px;
 }

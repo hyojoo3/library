@@ -59,6 +59,11 @@ public class BookServiceImpl implements BookService {
 	}
 
 	@Override
+	public int borrowCheck(Integer mem_num) {
+		return bookMapper.borrowCheck(mem_num);
+	}
+	
+	@Override
 	public void returnBook(Integer book_num) {
 		bookMapper.returnBook(book_num);
 	}
@@ -87,5 +92,7 @@ public class BookServiceImpl implements BookService {
 	public int adminBorrowRowCount(Map<String, Object> map) {
 		return bookMapper.adminBorrowRowCount(map);
 	}
+
+	
 
 }

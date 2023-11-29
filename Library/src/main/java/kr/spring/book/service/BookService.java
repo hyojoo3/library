@@ -19,6 +19,7 @@ public interface BookService {
 	
 	public void checkIn(BorrowVO borrow);
 	public void borrow(Integer book_num);
+	public int borrowCheck(Integer mem_num);
 	public void returnBook(Integer book_num);
 	public void checkOut(Integer borrow_num);
 	

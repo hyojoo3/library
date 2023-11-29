@@ -34,7 +34,7 @@ CREATE SEQUENCE book_seq;
 CREATE TABLE book_borrow(
 	borrow_num number,
     borrow_date date default SYSDATE not null,
-    return_date date default (SYSDATE+14) not null,
+    return_date date default (SYSDATE+7) not null,
 	book_num number not null,
 	mem_num number not null,
 	borrow_state number(1) default 1 not null,

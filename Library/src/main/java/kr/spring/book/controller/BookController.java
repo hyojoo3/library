@@ -197,14 +197,24 @@ public class BookController {
 		if(user==null) {
 			model.addAttribute("message", "로그인 후 이용해주세요");
 			model.addAttribute("url", request.getContextPath()+"/book/bookList.do");
-		}else {
+		}else{
 			borrow.setMem_num(user.getMem_num());
 			
-			bookService.checkIn(borrow);
-			bookService.borrow(book_num);
 			
-			model.addAttribute("message", "도서 대출 완료");
-			model.addAttribute("url", request.getContextPath()+"/book/bookList.do");
+			int cnt = bookService.borrowCheck(user.getMem_num());
+			
+			if(cnt>=3) {
+				
+				model.addAttribute("message", "3권 이상 대출 불가능합니다.");
+				model.addAttribute("url", request.getContextPath()+"/book/bookList.do");
+				
+			}else {
+				bookService.checkIn(borrow);
+				bookService.borrow(book_num);
+				
+				model.addAttribute("message", "도서 대출 완료");
+				model.addAttribute("url", request.getContextPath()+"/book/bookList.do");								
+			}
 		}
 		return "common/resultView";
 	}
@@ -219,8 +229,7 @@ public class BookController {
 			model.addAttribute("message", "로그인 후 이용해주세요");
 			model.addAttribute("url", request.getContextPath()+"/book/bookList.do");
 		}else {
-			borrow.setBorrow_num(user.getMem_num());
-			//System.out.print("!!!!!!!"+borrow);
+			
 			bookService.returnBook(book_num);
 			bookService.checkOut(borrow_num);
 			

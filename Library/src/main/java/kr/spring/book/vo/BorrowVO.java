@@ -21,4 +21,7 @@ public class BorrowVO {
 	private String book_name;
 	private byte[] book_photo;
 	private String book_photoName;
+	
+	private String mem_name;
+	
 }
