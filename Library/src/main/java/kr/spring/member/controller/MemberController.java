@@ -88,7 +88,7 @@ public class MemberController {
 				//인증성공, 로그인 처리
 				session.setAttribute("user", member);
 
-				return "redirect:/main/main.do";
+				return "redirect:/book/bookList.do";
 			}
 			//인증실패시
 			throw new AuthCheckException();
@@ -114,7 +114,7 @@ public class MemberController {
 			//로그아웃
 			session.invalidate();
 				
-			return "redirect:/main/main.do";
+			return "redirect:/book/bookList.do";
 		}
 	
 	
